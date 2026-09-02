@@ -12,6 +12,7 @@ from app.models.user import User
 from app.models.monitor import Monitor
 from app.models.execution import Execution
 from app.models.observation import Observation
+from app.models.notification import Notification
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
