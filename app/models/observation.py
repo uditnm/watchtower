@@ -1,7 +1,8 @@
 from .base import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import DateTime, ForeignKey, text, JSON
 from datetime import datetime
+
 
 class Observation(Base):
     __tablename__ = "observation"
@@ -11,3 +12,7 @@ class Observation(Base):
     monitor_id: Mapped[int] = mapped_column(ForeignKey("monitor.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     value: Mapped[dict] = mapped_column(JSON, nullable=False)
+
+    execution: Mapped["Execution"] = relationship("Execution", back_populates="observation")
+    monitor: Mapped["Monitor"] = relationship("Monitor", back_populates="observations")
+    notifications: Mapped[list["Notification"]] = relationship("Notification", back_populates="observation", cascade="all, delete-orphan")

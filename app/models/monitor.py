@@ -1,5 +1,5 @@
 from .base import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import JSON, DateTime, FetchedValue, ForeignKey, Enum, text
 from datetime import datetime
 from enum import Enum as PyEnum
@@ -24,3 +24,7 @@ class Monitor(Base):
         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"), 
         server_onupdate=FetchedValue()
     )
+
+    user: Mapped["User"] = relationship("User", back_populates="monitors")
+    executions: Mapped[list["Execution"]] = relationship("Execution", back_populates="monitor", cascade="all, delete-orphan")
+    observations: Mapped[list["Observation"]] = relationship("Observation", back_populates="monitor", cascade="all, delete-orphan")
